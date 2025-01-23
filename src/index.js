@@ -54,13 +54,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeRemainingContainer = document.getElementById("timeRemaining");
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
+
   // Show first question
   showQuestion();
 
 
   /************  TIMER  ************/
 
-  let timer;
+  let timer = quiz.timeRemaining;
+
+  function updateDisplay() {
+    const minutes = Math.floor(timer / 60).toString().padStart(2, "0");
+    const seconds = (timer % 60).toString().padStart(2, "0");
+    const timeRemainingContainer = document.getElementById("timeRemaining");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  }
+
+  function gameTimer() {
+    let intervalId = setInterval(() => {
+      timer--;
+      updateDisplay();
+
+      if (timer < 0) {
+        clearInterval(intervalId);
+        showResults();
+
+      }
+    }, 1000)
+  }
+
+
+  gameTimer();
 
 
   /************  EVENT LISTENERS  ************/
